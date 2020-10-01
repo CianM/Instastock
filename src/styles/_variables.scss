@@ -1,3 +1,18 @@
 // Colours (Names from https://chir.ag/projects/name-that-color/)
 $color-alabaster: #fcfcfc;
 $color-mandy: #e84f5f;
+$color-outer-space: #2d383a;
+
+// Fonts
+@font-face {
+	font-family: "Raleway";
+	src: url("~@/assets/fonts/raleway-variable.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Sansita Swashed";
+	src: url("~@/assets/fonts/sansita-swashed-variable.ttf") format("truetype");
+}
+
+$font-family-raleway: "Raleway", sans-serif;
+$font-family-sansita-swashed: "Sansita Swashed", cursive;

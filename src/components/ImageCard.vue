@@ -34,7 +34,7 @@ export default {
 	},
 	methods: {
 		handleImageClick: function(id) {
-			this.$emit("toggle-saved-state", id);
+			this.$emit("card-clicked", id);
 		}
 	}
 };
