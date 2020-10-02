@@ -11,13 +11,13 @@
 </template>
 
 <script>
+import { mapActions, mapGetters, mapMutations } from "vuex";
+
 import BookmarkPopup from "./components/BookmarkPopup.vue";
 import ImageViewer from "./components/ImageViewer.vue";
 import SplashScreen from "./components/SplashScreen.vue";
 
-import { LoremPicsumService } from "./services/lorem-picsum.service";
-
-const service = new LoremPicsumService();
+import { ACTION_TYPES, MUTATION_TYPES } from "./store";
 
 export default {
 	name: "App",
@@ -28,43 +28,28 @@ export default {
 	},
 	data: function() {
 		return {
-			allImages: {
-				allIds: [],
-				byId: {}
-			},
-			bookmarkedImageIds: [],
-			showSplashScreen: true
+			showSplashScreen: false
 		};
 	},
 	computed: {
-		images: function() {
-			return this.allImages.allIds.map(id => this.allImages.byId[id]);
-		},
-		bookmarkedImages: function() {
-			return this.images.filter(image => this.bookmarkedImageIds.includes(image.id));
+		...mapGetters(["images", "bookmarkedImages"]),
+		bookmarkedImageIds: function() {
+			return this.$store.state.bookmarkedImageIds;
 		}
 	},
 	mounted: function() {
 		// Fetch list of images
-		service.fetchImages().then(images => {
-			this.allImages = {
-				allIds: images.map(image => image.id),
-				byId: images.reduce((acc, image) => ({ ...acc, [image.id]: image }), {})
-			};
-		});
+		this.fetchImages();
 	},
 	methods: {
+		...mapActions({
+			fetchImages: ACTION_TYPES.FETCH_IMAGES
+		}),
+		...mapMutations({
+			toggleBookmarkedImage: MUTATION_TYPES.TOGGLE_BOOKMARK
+		}),
 		closeSplashScreen: function() {
 			this.showSplashScreen = false;
-		},
-		toggleBookmarkedImage: function(id) {
-			// Has image already been saved?
-			const isSaved = this.bookmarkedImageIds.includes(id);
-
-			// Toggle image saved state
-			this.bookmarkedImageIds = isSaved
-				? this.bookmarkedImageIds.filter(savedId => savedId !== id)
-				: [...this.bookmarkedImageIds, id];
 		}
 	}
 };

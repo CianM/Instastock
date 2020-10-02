@@ -8,14 +8,12 @@ const LIMIT = 50;
  * Image fetching service for Lorem Picsum
  * @see {@link https://picsum.photos/}
  */
-export class LoremPicsumService {
-	fetchImages = async () => {
-		const response = await fetch(`${BASE_URL}/v2/list?limit=${LIMIT}`);
+export async function fetchImages() {
+	const response = await fetch(`${BASE_URL}/v2/list?limit=${LIMIT}`);
 
-		const images = await response.json();
+	const images = await response.json();
 
-		return images;
-	};
+	return images;
 }
 
 /*export interface PhotoImage {
@@ -26,3 +24,7 @@ export class LoremPicsumService {
 	url: string;
 	width: number;
 }*/
+
+export default {
+	fetchImages
+};
