@@ -72,8 +72,8 @@ export default {
 		height: 2rem;
 		width: 2rem;
 		position: absolute;
-		bottom: 1rem;
-		left: 1rem;
+		bottom: 5rem;
+		left: 1.5rem;
 	}
 }
 </style>

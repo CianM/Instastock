@@ -5,11 +5,13 @@
 			:bookmarkedImageIds="bookmarkedImageIds"
 			@toggle-bookmarked-image="toggleBookmarkedImage"
 		/>
+		<BookmarkPopup :images="bookmarkedImages" />
 		<SplashScreen v-if="showSplashScreen" @start="closeSplashScreen" />
 	</div>
 </template>
 
 <script>
+import BookmarkPopup from "./components/BookmarkPopup.vue";
 import ImageViewer from "./components/ImageViewer.vue";
 import SplashScreen from "./components/SplashScreen.vue";
 
@@ -20,19 +22,36 @@ const service = new LoremPicsumService();
 export default {
 	name: "App",
 	components: {
+		BookmarkPopup,
 		ImageViewer,
 		SplashScreen
 	},
 	data: function() {
 		return {
-			images: [], // List of all images
+			allImages: {
+				allIds: [],
+				byId: {}
+			},
 			bookmarkedImageIds: [],
 			showSplashScreen: true
 		};
 	},
+	computed: {
+		images: function() {
+			return this.allImages.allIds.map(id => this.allImages.byId[id]);
+		},
+		bookmarkedImages: function() {
+			return this.images.filter(image => this.bookmarkedImageIds.includes(image.id));
+		}
+	},
 	mounted: function() {
 		// Fetch list of images
-		service.fetchImages().then(images => (this.images = images));
+		service.fetchImages().then(images => {
+			this.allImages = {
+				allIds: images.map(image => image.id),
+				byId: images.reduce((acc, image) => ({ ...acc, [image.id]: image }), {})
+			};
+		});
 	},
 	methods: {
 		closeSplashScreen: function() {

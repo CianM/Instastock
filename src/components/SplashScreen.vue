@@ -38,6 +38,7 @@ export default {
 	height: calc(var(--vh) * 100);
 	padding: 5rem 2rem;
 	box-sizing: border-box;
+	z-index: 15;
 
 	&__title {
 		font-family: $font-family-sansita-swashed;
