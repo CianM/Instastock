@@ -8,6 +8,7 @@
 				<p v-if="images.length === 0">No images bookmarked</p>
 				<div class="list">
 					<div
+						@click="setActiveImageId(image.id)"
 						class="list__item"
 						v-for="image in images"
 						:key="image.id"
@@ -20,23 +21,26 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+
 import BookmarkPopupButton from "./BookmarkPopupButton";
+
+import { GETTER_TYPES, MUTATION_TYPES } from "../store";
 
 export default {
 	name: "BookmarkPopup",
 	components: {
 		BookmarkPopupButton
 	},
-	props: {
-		images: {
-			type: Array,
-			default: () => []
-		}
-	},
 	data: function() {
 		return {
 			isOpen: false
 		};
+	},
+	computed: {
+		...mapGetters({
+			images: GETTER_TYPES.BOOKMARKED_IMAGES
+		})
 	},
 	methods: {
 		toggle: function() {
@@ -47,7 +51,10 @@ export default {
 		},
 		close: function() {
 			this.isOpen = false;
-		}
+		},
+		...mapMutations({
+			setActiveImageId: MUTATION_TYPES.SET_ACTIVE_IMAGE_ID
+		})
 	}
 };
 </script>

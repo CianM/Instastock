@@ -1,12 +1,13 @@
 <template>
 	<div id="app">
+		<SplashScreen v-if="showSplashScreen" @start="closeSplashScreen" />
 		<ImageViewer
 			:images="images"
 			:bookmarkedImageIds="bookmarkedImageIds"
 			@toggle-bookmarked-image="toggleBookmarkedImage"
 		/>
-		<BookmarkPopup :images="bookmarkedImages" />
-		<SplashScreen v-if="showSplashScreen" @start="closeSplashScreen" />
+		<BookmarkPopup />
+		<ImageDetail v-if="isActiveImageSet" />
 	</div>
 </template>
 
@@ -14,15 +15,17 @@
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
 import BookmarkPopup from "./components/BookmarkPopup.vue";
+import ImageDetail from "./components/ImageDetail";
 import ImageViewer from "./components/ImageViewer.vue";
 import SplashScreen from "./components/SplashScreen.vue";
 
-import { ACTION_TYPES, MUTATION_TYPES } from "./store";
+import { ACTION_TYPES, MUTATION_TYPES, GETTER_TYPES } from "./store";
 
 export default {
 	name: "App",
 	components: {
 		BookmarkPopup,
+		ImageDetail,
 		ImageViewer,
 		SplashScreen
 	},
@@ -32,9 +35,14 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(["images", "bookmarkedImages"]),
+		...mapGetters({
+			images: GETTER_TYPES.IMAGES
+		}),
 		bookmarkedImageIds: function() {
 			return this.$store.state.bookmarkedImageIds;
+		},
+		isActiveImageSet: function() {
+			return this.$store.state.activeImageId !== null;
 		}
 	},
 	mounted: function() {
