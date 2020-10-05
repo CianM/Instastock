@@ -7,7 +7,7 @@
 			@toggle-bookmarked-image="toggleBookmarkedImage"
 		/>
 		<BookmarkPopup />
-		<ImageDetail v-if="isActiveImageSet" />
+		<ImageDetail />
 	</div>
 </template>
 
@@ -40,9 +40,6 @@ export default {
 		}),
 		bookmarkedImageIds: function() {
 			return this.$store.state.bookmarkedImageIds;
-		},
-		isActiveImageSet: function() {
-			return this.$store.state.activeImageId !== null;
 		}
 	},
 	mounted: function() {

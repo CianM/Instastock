@@ -7,7 +7,7 @@
 	>
 		<img class="card__image" :src="image.download_url" />
 		<div class="card__indicator-container">
-			<HeartIndicator :active="active" />
+			<HeartIndicator shadow :active="active" />
 		</div>
 	</div>
 </template>

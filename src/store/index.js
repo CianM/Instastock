@@ -19,6 +19,7 @@ export const ACTION_TYPES = {
 
 export const GETTER_TYPES = {
 	IMAGES: "Get a list of all images",
+	BOOKMARKED_IDS: "Get a list of all the bookmarked image IDs",
 	BOOKMARKED_IMAGES: "Get a list of all bookmarked images",
 	ACTIVE_IMAGE: "Get the active image data"
 };
@@ -35,6 +36,9 @@ const state = {
 const getters = {
 	[GETTER_TYPES.IMAGES]: function(state) {
 		return state.images.allIds.map(id => state.images.byId[id]);
+	},
+	[GETTER_TYPES.BOOKMARKED_IDS]: function(state) {
+		return state.bookmarkedImageIds;
 	},
 	[GETTER_TYPES.BOOKMARKED_IMAGES]: function(state, getters) {
 		return getters[GETTER_TYPES.IMAGES].filter(image => state.bookmarkedImageIds.includes(image.id));
