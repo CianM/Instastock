@@ -5,6 +5,10 @@
 				<div class="image-detail" v-show="isActiveImageSet">
 					<img class="image-detail__image" :src="image.download_url" />
 					<div class="image-detail__controls">
+						<button class="control control--download" @click="download">
+							<img class="control__image" src="../assets/images/download.svg" />
+						</button>
+						<a download="instastock" class="control control--download-link" ref="downloadLink" />
 						<HeartIndicator border :active="isImageBookmarked" @heart-clicked="toggleImageBookmark" />
 					</div>
 					<div class="image-detail__info">
@@ -81,6 +85,16 @@ export default {
 		},
 		toggleImageBookmark: function() {
 			this.toggleBookmark(this.image.id);
+		},
+		download: async function() {
+			const response = await fetch(this.image.download_url);
+
+			const blob = await response.blob();
+
+			const imageDownloadUrl = URL.createObjectURL(blob);
+
+			this.$refs.downloadLink.href = imageDownloadUrl;
+			this.$refs.downloadLink.click();
 		}
 	}
 };
@@ -160,6 +174,7 @@ export default {
 		grid-auto-flow: column;
 		justify-content: end;
 		grid-auto-columns: 3rem;
+		column-gap: 1rem;
 	}
 
 	&__info {
@@ -201,6 +216,10 @@ export default {
 	&__image {
 		height: 100%;
 		width: 100%;
+	}
+
+	&--download-link {
+		display: none;
 	}
 }
 </style>
