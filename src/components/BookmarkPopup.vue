@@ -20,14 +20,15 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import { mapGetters, mapMutations } from "vuex";
 
-import BookmarkPopupButton from "./BookmarkPopupButton";
+import BookmarkPopupButton from "./BookmarkPopupButton.vue";
 
-import { GETTER_TYPES, MUTATION_TYPES } from "../store";
+import { GetterTypes, MutationTypes } from "../store";
 
-export default {
+export default Vue.extend({
 	name: "BookmarkPopup",
 	components: {
 		BookmarkPopupButton
@@ -39,7 +40,7 @@ export default {
 	},
 	computed: {
 		...mapGetters({
-			images: GETTER_TYPES.BOOKMARKED_IMAGES
+			images: GetterTypes.BOOKMARKED_IMAGES
 		})
 	},
 	methods: {
@@ -53,10 +54,10 @@ export default {
 			this.isOpen = false;
 		},
 		...mapMutations({
-			setActiveImageId: MUTATION_TYPES.SET_ACTIVE_IMAGE_ID
+			setActiveImageId: MutationTypes.SET_ACTIVE_IMAGE_ID
 		})
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>

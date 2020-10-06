@@ -12,15 +12,19 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropType } from "vue";
+
 import HeartIndicator from "./HeartIndicator.vue";
 
-export default {
+import { InstastockImage } from "../interfaces";
+
+export default Vue.extend({
 	name: "ImageCard",
 	props: {
 		// Image config
 		image: {
-			type: Object,
+			type: Object as PropType<InstastockImage>,
 			required: true
 		},
 		// Is the image saved?
@@ -33,11 +37,11 @@ export default {
 		HeartIndicator
 	},
 	methods: {
-		handleImageClick: function(id) {
+		handleImageClick: function(id: string) {
 			this.$emit("card-clicked", id);
 		}
 	}
-};
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

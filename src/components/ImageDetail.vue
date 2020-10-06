@@ -34,34 +34,41 @@
 	</transition>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import { mapGetters, mapMutations } from "vuex";
 
-import HeartIndicator from "./HeartIndicator";
+import HeartIndicator from "./HeartIndicator.vue";
 
-import { GETTER_TYPES, MUTATION_TYPES } from "../store";
+import { GetterTypes, MutationTypes } from "../store";
 
-export default {
+interface InfoItem {
+	label: string;
+	value: string | number;
+	type?: string;
+}
+
+export default Vue.extend({
 	name: "ImageDetail",
 	components: {
 		HeartIndicator
 	},
 	computed: {
 		...mapGetters({
-			image: GETTER_TYPES.ACTIVE_IMAGE,
-			bookmarkedIds: GETTER_TYPES.BOOKMARKED_IDS
+			image: GetterTypes.ACTIVE_IMAGE,
+			bookmarkedIds: GetterTypes.BOOKMARKED_IDS
 		}),
-		isActiveImageSet: function() {
+		isActiveImageSet: function(): boolean {
 			return this.$store.state.activeImageId !== null;
 		},
-		isImageBookmarked: function() {
+		isImageBookmarked: function(): boolean {
 			if (!this.image) {
 				return false;
 			}
 
 			return this.bookmarkedIds.includes(this.image.id);
 		},
-		info: function() {
+		info: function(): InfoItem[] {
 			if (!this.image) {
 				return [];
 			}
@@ -77,8 +84,8 @@ export default {
 	},
 	methods: {
 		...mapMutations({
-			setActiveImageId: MUTATION_TYPES.SET_ACTIVE_IMAGE_ID,
-			toggleBookmark: MUTATION_TYPES.TOGGLE_BOOKMARK
+			setActiveImageId: MutationTypes.SET_ACTIVE_IMAGE_ID,
+			toggleBookmark: MutationTypes.TOGGLE_BOOKMARK
 		}),
 		close: function() {
 			this.setActiveImageId(null);
@@ -93,11 +100,13 @@ export default {
 
 			const imageDownloadUrl = URL.createObjectURL(blob);
 
-			this.$refs.downloadLink.href = imageDownloadUrl;
-			this.$refs.downloadLink.click();
+			const link = this.$refs.downloadLink as HTMLAnchorElement;
+
+			link.href = imageDownloadUrl;
+			link.click();
 		}
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>

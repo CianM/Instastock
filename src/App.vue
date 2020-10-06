@@ -11,17 +11,18 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from "vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
 import BookmarkPopup from "./components/BookmarkPopup.vue";
-import ImageDetail from "./components/ImageDetail";
+import ImageDetail from "./components/ImageDetail.vue";
 import ImageViewer from "./components/ImageViewer.vue";
 import SplashScreen from "./components/SplashScreen.vue";
 
-import { ACTION_TYPES, MUTATION_TYPES, GETTER_TYPES } from "./store";
+import { ActionTypes, GetterTypes, MutationTypes } from "./store";
 
-export default {
+export default Vue.extend({
 	name: "App",
 	components: {
 		BookmarkPopup,
@@ -36,11 +37,9 @@ export default {
 	},
 	computed: {
 		...mapGetters({
-			images: GETTER_TYPES.IMAGES
-		}),
-		bookmarkedImageIds: function() {
-			return this.$store.state.bookmarkedImageIds;
-		}
+			images: GetterTypes.IMAGES,
+			bookmarkedImageIds: GetterTypes.BOOKMARKED_IDS
+		})
 	},
 	mounted: function() {
 		// Fetch list of images
@@ -48,16 +47,16 @@ export default {
 	},
 	methods: {
 		...mapActions({
-			fetchImages: ACTION_TYPES.FETCH_IMAGES
+			fetchImages: ActionTypes.FETCH_IMAGES
 		}),
 		...mapMutations({
-			toggleBookmarkedImage: MUTATION_TYPES.TOGGLE_BOOKMARK
+			toggleBookmarkedImage: MutationTypes.TOGGLE_BOOKMARK
 		}),
 		closeSplashScreen: function() {
 			this.showSplashScreen = false;
 		}
 	}
-};
+});
 </script>
 
 <style lang="scss">

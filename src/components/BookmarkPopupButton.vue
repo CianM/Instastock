@@ -16,8 +16,10 @@
 	</button>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
 	name: "BookmarkPopupButton",
 	props: {
 		isPopupOpen: {
@@ -34,7 +36,7 @@ export default {
 			this.$emit("click");
 		}
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>

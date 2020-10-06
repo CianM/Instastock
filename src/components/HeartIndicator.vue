@@ -24,8 +24,10 @@
 	</svg>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from "vue";
+
+export default Vue.extend({
 	props: {
 		active: {
 			type: Boolean,
@@ -45,7 +47,7 @@ export default {
 			this.$emit("heart-clicked");
 		}
 	}
-};
+});
 </script>
 
 <style scoped lang="scss">
