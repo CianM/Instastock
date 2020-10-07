@@ -12,7 +12,7 @@
 						class="list__item"
 						v-for="image in images"
 						:key="image.id"
-						:style="{ backgroundImage: `url(${image.download_url})` }"
+						:style="{ backgroundImage: `url(${image.thumbnail || image.download_url})` }"
 					/>
 				</div>
 			</div>

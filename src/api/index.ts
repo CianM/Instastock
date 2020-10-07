@@ -1,3 +1,5 @@
-export const SOURCES = {
-	LOREM_PICSUM: "https://picsum.photos/"
-};
+import { LoremPicsumService } from "./lorem-picsum";
+
+const loremPicsumService = new LoremPicsumService();
+
+export { loremPicsumService };
