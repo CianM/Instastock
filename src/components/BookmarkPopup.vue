@@ -12,7 +12,7 @@
 						class="list__item"
 						v-for="image in images"
 						:key="image.id"
-						:style="{ backgroundImage: `url(${image.thumbnail || image.download_url})` }"
+						:style="{ backgroundImage: `url(${thumbnailsByImageId[image.id] || image.download_url})` }"
 					/>
 				</div>
 			</div>
@@ -40,7 +40,8 @@ export default Vue.extend({
 	},
 	computed: {
 		...mapGetters({
-			images: GetterTypes.BOOKMARKED_IMAGES
+			images: GetterTypes.BOOKMARKED_IMAGES,
+			thumbnailsByImageId: GetterTypes.GET_THUMBNAILS
 		})
 	},
 	methods: {

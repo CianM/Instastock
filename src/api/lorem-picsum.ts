@@ -1,7 +1,7 @@
 // Image page size
 const LIMIT = 50;
 
-import { InstastockImage, StockImageService } from "../interfaces";
+import { InstastockImage, StockImageService, ThumbnailResponse } from "../interfaces";
 
 import { createThumbnail } from "../utils";
 
@@ -15,31 +15,17 @@ export class LoremPicsumService implements StockImageService {
 	API_BASE_URL = "https://picsum.photos";
 
 	/**
-	 * Fetch and create a thumbnail for the image
-	 */
-	private getThumbnail = async (url: string): Promise<string> => {
-		// Fetch image
-		const response = await fetch(url);
-
-		// Convert to blob
-		const blob = await response.blob();
-
-		// Create thumbnail data URL
-		return createThumbnail(blob);
-	};
-
-	/**
 	 * Convert `LoremPicsumImage` to `InstastockImage`.
 	 */
-	private formatImages = async (images: LoremPicsumImage[] = []): Promise<InstastockImage[]> => {
-		return Promise.all(
-			images.map(async image => {
-				return {
-					...image,
-					thumbnail: await this.getThumbnail(image.download_url)
-				};
-			})
-		);
+	private formatImages = (images: LoremPicsumImage[] = []): InstastockImage[] => {
+		const formattedImages: InstastockImage[] = images.map(image => {
+			return {
+				...image,
+				source: this.ID
+			};
+		});
+
+		return formattedImages;
 	};
 
 	/**
@@ -51,6 +37,17 @@ export class LoremPicsumService implements StockImageService {
 		const images: LoremPicsumImage[] = await response.json();
 
 		return this.formatImages(images);
+	};
+
+	createThumbnail = async (url: string): Promise<string> => {
+		// Fetch image
+		const response = await fetch(url);
+
+		// Convert to blob
+		const blob = await response.blob();
+
+		// Create thumbnail data URL
+		return createThumbnail(blob);
 	};
 }
 

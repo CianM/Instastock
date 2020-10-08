@@ -1,3 +1,5 @@
+import { LoremPicsumService } from "../api/lorem-picsum";
+
 export interface InstastockImage {
 	author: string;
 	download_url: string;
@@ -5,7 +7,7 @@ export interface InstastockImage {
 	id: string;
 	url: string;
 	width: number;
-	thumbnail: string;
+	source: LoremPicsumService["ID"];
 }
 
 export interface StockImageService {
@@ -15,4 +17,11 @@ export interface StockImageService {
 	readonly API_BASE_URL: string;
 
 	fetchImages(): Promise<InstastockImage[]>;
+
+	createThumbnail(url: string): Promise<string>;
+}
+
+export interface ThumbnailResponse {
+	id: string; // Image ID
+	thumbnail: string; // Thumbnail data URL
 }

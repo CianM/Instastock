@@ -5,6 +5,7 @@ import { AppState } from "./state";
 
 export enum GetterTypes {
 	IMAGES = "Get a list of all images",
+	GET_THUMBNAILS = "Get thumbnail map",
 	BOOKMARKED_IDS = "Get a list of all the bookmarked image IDs",
 	BOOKMARKED_IMAGES = "Get a list of all bookmarked images",
 	ACTIVE_IMAGE = "Get the active image data"
@@ -13,6 +14,9 @@ export enum GetterTypes {
 export const getters: GetterTree<AppState, AppState> = {
 	[GetterTypes.IMAGES]: function(state: AppState) {
 		return state.images.allIds.map(id => state.images.byId[id]);
+	},
+	[GetterTypes.GET_THUMBNAILS]: function(state: AppState) {
+		return state.images.thumbnails;
 	},
 	[GetterTypes.BOOKMARKED_IDS]: function(state: AppState) {
 		return state.bookmarkedImageIds;
