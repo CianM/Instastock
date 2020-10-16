@@ -1,5 +1,11 @@
 <template>
 	<div :class="['popup-container', { 'popup-container--open': isOpen }]">
+		<button
+			:class="['popup-container__download', { 'popup-container__download--active': isOpen }]"
+			@click="downloadAll"
+		>
+			<img class="popup-container__download__icon" src="../assets/images/download.svg" />
+		</button>
 		<BookmarkPopupButton :isPopupOpen="isOpen" :count="images.length" @click="toggle" />
 
 		<div class="popup-container__body">
@@ -26,7 +32,9 @@ import { mapGetters, mapMutations } from "vuex";
 
 import BookmarkPopupButton from "./BookmarkPopupButton.vue";
 
+import { InstastockImage } from "@/interfaces";
 import { GetterTypes, MutationTypes } from "@/store";
+import { downloadFile, formatFileName, getExtensionFromMimeType, zipFiles } from "@/utils";
 
 export default Vue.extend({
 	name: "BookmarkPopup",
@@ -54,6 +62,30 @@ export default Vue.extend({
 		close: function() {
 			this.isOpen = false;
 		},
+		downloadAll: async function() {
+			const images: InstastockImage[] = this.images;
+
+			// Create promises to get all files
+			const filePromises = images.map(async image => {
+				// Fetch image
+				const response = await fetch(image.url);
+				const blob = await response.blob();
+
+				const extension = getExtensionFromMimeType(blob.type);
+
+				// Format image file name
+				const fileName = formatFileName({ extension, imageId: image.id });
+
+				return new File([blob], fileName, { type: blob.type });
+			});
+
+			const files = await Promise.all(filePromises);
+
+			// Zip all files together for one download
+			const zippedFile = await zipFiles({ files });
+
+			downloadFile(zippedFile);
+		},
 		...mapMutations({
 			setActiveImageId: MutationTypes.SET_ACTIVE_IMAGE_ID
 		})
@@ -68,6 +100,25 @@ $button-size: 3rem;
 	$popup-container: &;
 
 	position: relative;
+
+	&__download {
+		position: absolute;
+		bottom: 5rem;
+		left: 1rem;
+		height: 3rem;
+		width: 3rem;
+		border-radius: 50%;
+		background-color: transparent;
+		padding: 0.5rem;
+		border: 0;
+		opacity: 0;
+		z-index: 10;
+		transition: opacity 0.25s;
+
+		&--active {
+			opacity: 1;
+		}
+	}
 
 	&__body {
 		position: absolute;

@@ -6,6 +6,8 @@ import store from "./store";
 
 Vue.config.productionTip = false;
 
+// TODO: Move height calculation and update on window resize
+
 // Calculate 1% of visible window height (in px)
 const vh = window.innerHeight * 0.01;
 

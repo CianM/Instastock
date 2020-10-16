@@ -8,7 +8,6 @@
 						<button class="control control--download" @click="download">
 							<img class="control__image" src="../assets/images/download.svg" />
 						</button>
-						<a download="instastock" class="control control--download-link" ref="downloadLink" />
 						<HeartIndicator border :active="isImageBookmarked" @heart-clicked="toggleImageBookmark" />
 					</div>
 					<div class="image-detail__info">
@@ -43,6 +42,7 @@ import HeartIndicator from "./HeartIndicator.vue";
 import { SERVICE_MAP } from "@/api";
 import { InfoItem, InstastockImage } from "@/interfaces";
 import { GetterTypes, MutationTypes } from "@/store";
+import { downloadFile, formatFileName, getExtensionFromMimeType } from "@/utils";
 
 export default Vue.extend({
 	name: "ImageDetail",
@@ -92,16 +92,17 @@ export default Vue.extend({
 			this.toggleBookmark(this.image.id);
 		},
 		download: async function() {
-			const response = await fetch(this.image.url);
+			const image: InstastockImage = this.image;
 
+			const response = await fetch(image.url);
 			const blob = await response.blob();
 
-			const imageDownloadUrl = URL.createObjectURL(blob);
+			const extension = getExtensionFromMimeType(blob.type);
+			const fileName = formatFileName({ extension, imageId: image.id });
 
-			const link = this.$refs.downloadLink as HTMLAnchorElement;
+			const file = new File([blob], fileName, { type: blob.type });
 
-			link.href = imageDownloadUrl;
-			link.click();
+			downloadFile(file);
 		}
 	}
 });
@@ -223,10 +224,6 @@ export default Vue.extend({
 	&__image {
 		height: 100%;
 		width: 100%;
-	}
-
-	&--download-link {
-		display: none;
 	}
 }
 </style>

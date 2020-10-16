@@ -18,6 +18,7 @@ export const actions: ActionTree<AppState, AppState> = {
 		commit(MutationTypes.SET_IMAGES, images);
 
 		// Create thumbnails for images
+		// TODO: Make API calls independent of one another
 		images.forEach(async image => {
 			const thumbnail = await loremPicsumService.createThumbnail(image.url);
 

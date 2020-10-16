@@ -7,5 +7,5 @@
  * @returns {string} Formatted globally unique ID
  */
 export const formatId = ({ sourceId, imageId }: { sourceId: string; imageId: string }): string => {
-	return `${sourceId}:${imageId}`;
+	return `${sourceId}--${imageId}`;
 };
