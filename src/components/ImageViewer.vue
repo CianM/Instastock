@@ -10,26 +10,30 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropType } from "vue";
+
 import ImageCard from "./ImageCard.vue";
 
-export default {
+import { InstastockImage } from "@/interfaces";
+
+export default Vue.extend({
 	name: "ImageViewer",
 	components: {
 		ImageCard
 	},
 	props: {
 		images: {
-			type: Array,
+			type: Array as PropType<InstastockImage[]>,
 			default: () => []
 		},
 		bookmarkedImageIds: {
-			type: Array,
+			type: Array as PropType<string[]>,
 			default: () => []
 		}
 	},
 	methods: {
-		handleImageClick: function(id) {
+		handleImageClick: function(id: string) {
 			this.toggleBookmarkedImage(id);
 
 			// If image has just been saved scroll to next image.
@@ -37,15 +41,19 @@ export default {
 				this.showNextImage();
 			}
 		},
-		toggleBookmarkedImage: function(id) {
+		toggleBookmarkedImage: function(id: string) {
 			this.$emit("toggle-bookmarked-image", id);
 		},
 		showNextImage: function() {
 			// Move to next image to the right
-			setTimeout(() => (this.$refs.imageSlider.scrollLeft += window.innerWidth), 500);
+			setTimeout(() => {
+				const slider = this.$refs.imageSlider as HTMLDivElement;
+
+				slider.scrollLeft += window.innerWidth;
+			}, 500);
 		}
 	}
-};
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

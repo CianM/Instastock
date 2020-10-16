@@ -2,25 +2,29 @@
 	<div
 		class="card"
 		:id="image.id"
-		:style="{ backgroundImage: `url(${image.download_url})` }"
+		:style="{ backgroundImage: `url(${image.url})` }"
 		@click="handleImageClick(image.id)"
 	>
-		<img class="card__image" :src="image.download_url" />
+		<img class="card__image" :src="image.url" />
 		<div class="card__indicator-container">
-			<HeartIndicator :active="active" />
+			<HeartIndicator shadow :active="active" />
 		</div>
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropType } from "vue";
+
 import HeartIndicator from "./HeartIndicator.vue";
 
-export default {
+import { InstastockImage } from "@/interfaces";
+
+export default Vue.extend({
 	name: "ImageCard",
 	props: {
 		// Image config
 		image: {
-			type: Object,
+			type: Object as PropType<InstastockImage>,
 			required: true
 		},
 		// Is the image saved?
@@ -33,11 +37,11 @@ export default {
 		HeartIndicator
 	},
 	methods: {
-		handleImageClick: function(id) {
+		handleImageClick: function(id: string) {
 			this.$emit("card-clicked", id);
 		}
 	}
-};
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
