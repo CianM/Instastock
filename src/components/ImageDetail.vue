@@ -173,9 +173,10 @@ export default Vue.extend({
 	}
 
 	&__image {
-		width: 100%;
 		max-height: calc(var(--vh) * 30);
+		max-width: 100%;
 		background-color: rgba($color-outer-space, 0.1);
+		margin: 0 auto;
 	}
 
 	&__controls {
