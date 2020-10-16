@@ -3,7 +3,7 @@
 		<div class="container" v-show="isActiveImageSet" @click.self="close">
 			<transition name="popup">
 				<div class="image-detail" v-show="isActiveImageSet">
-					<img class="image-detail__image" :src="image.download_url" />
+					<img class="image-detail__image" :src="image.url" />
 					<div class="image-detail__controls">
 						<button class="control control--download" @click="download">
 							<img class="control__image" src="../assets/images/download.svg" />
@@ -19,11 +19,11 @@
 								rel="noopener noreferrer"
 								target="_blank"
 								:key="`${item.label}-link`"
-								:href="item.value"
-								>{{ item.value }}</a
+								:href="item.value(image)"
+								>{{ item.value(image) }}</a
 							>
 							<div v-else :key="`${item.label}-value`" class="image-detail__info__value">
-								{{ item.value }}
+								{{ item.value(image) }}
 							</div>
 						</template>
 					</div>
@@ -40,13 +40,9 @@ import { mapGetters, mapMutations } from "vuex";
 
 import HeartIndicator from "./HeartIndicator.vue";
 
-import { GetterTypes, MutationTypes } from "../store";
-
-interface InfoItem {
-	label: string;
-	value: string | number;
-	type?: string;
-}
+import { SERVICE_MAP } from "@/api";
+import { InfoItem, InstastockImage } from "@/interfaces";
+import { GetterTypes, MutationTypes } from "@/store";
 
 export default Vue.extend({
 	name: "ImageDetail",
@@ -73,13 +69,15 @@ export default Vue.extend({
 				return [];
 			}
 
-			return [
-				{ label: "ID", value: this.image.id },
-				{ label: "Height", value: this.image.height },
-				{ label: "Width", value: this.image.width },
-				{ label: "Author", value: this.image.author },
-				{ label: "Source", value: this.image.url, type: "link" }
-			];
+			const imageSource = (this.image as InstastockImage).source;
+
+			const sourceService = SERVICE_MAP[imageSource];
+
+			if (sourceService) {
+				return sourceService.IMAGE_DETAILS_CONFIG || [];
+			}
+
+			return [];
 		}
 	},
 	methods: {
@@ -94,7 +92,7 @@ export default Vue.extend({
 			this.toggleBookmark(this.image.id);
 		},
 		download: async function() {
-			const response = await fetch(this.image.download_url);
+			const response = await fetch(this.image.url);
 
 			const blob = await response.blob();
 
@@ -176,6 +174,8 @@ export default Vue.extend({
 
 	&__image {
 		width: 100%;
+		max-height: calc(var(--vh) * 30);
+		background-color: rgba($color-outer-space, 0.1);
 	}
 
 	&__controls {
@@ -194,14 +194,11 @@ export default Vue.extend({
 		align-items: start;
 		justify-items: start;
 		text-align: left;
+		word-break: break-word;
 
 		&__label {
 			font-weight: bold;
 			font-variant: small-caps;
-		}
-
-		&__value {
-			margin-bottom: 1rem;
 		}
 	}
 

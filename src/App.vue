@@ -15,12 +15,12 @@
 import Vue from "vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
-import BookmarkPopup from "./components/BookmarkPopup.vue";
-import ImageDetail from "./components/ImageDetail.vue";
-import ImageViewer from "./components/ImageViewer.vue";
-import SplashScreen from "./components/SplashScreen.vue";
+import BookmarkPopup from "@/components/BookmarkPopup.vue";
+import ImageDetail from "@/components/ImageDetail.vue";
+import ImageViewer from "@/components/ImageViewer.vue";
+import SplashScreen from "@/components/SplashScreen.vue";
 
-import { ActionTypes, GetterTypes, MutationTypes } from "./store";
+import { ActionTypes, GetterTypes, MutationTypes } from "@/store";
 
 export default Vue.extend({
 	name: "App",

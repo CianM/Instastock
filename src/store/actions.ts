@@ -19,7 +19,7 @@ export const actions: ActionTree<AppState, AppState> = {
 
 		// Create thumbnails for images
 		images.forEach(async image => {
-			const thumbnail = await loremPicsumService.createThumbnail(image.download_url);
+			const thumbnail = await loremPicsumService.createThumbnail(image.url);
 
 			commit(MutationTypes.SET_THUMBNAIL, { id: image.id, thumbnail });
 		});

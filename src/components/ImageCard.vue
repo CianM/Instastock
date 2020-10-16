@@ -2,10 +2,10 @@
 	<div
 		class="card"
 		:id="image.id"
-		:style="{ backgroundImage: `url(${image.download_url})` }"
+		:style="{ backgroundImage: `url(${image.url})` }"
 		@click="handleImageClick(image.id)"
 	>
-		<img class="card__image" :src="image.download_url" />
+		<img class="card__image" :src="image.url" />
 		<div class="card__indicator-container">
 			<HeartIndicator shadow :active="active" />
 		</div>
@@ -17,7 +17,7 @@ import Vue, { PropType } from "vue";
 
 import HeartIndicator from "./HeartIndicator.vue";
 
-import { InstastockImage } from "../interfaces";
+import { InstastockImage } from "@/interfaces";
 
 export default Vue.extend({
 	name: "ImageCard",

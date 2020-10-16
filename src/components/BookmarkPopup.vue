@@ -12,7 +12,7 @@
 						class="list__item"
 						v-for="image in images"
 						:key="image.id"
-						:style="{ backgroundImage: `url(${thumbnailsByImageId[image.id] || image.download_url})` }"
+						:style="{ backgroundImage: `url(${thumbnailsByImageId[image.id] || image.url})` }"
 					/>
 				</div>
 			</div>
@@ -26,7 +26,7 @@ import { mapGetters, mapMutations } from "vuex";
 
 import BookmarkPopupButton from "./BookmarkPopupButton.vue";
 
-import { GetterTypes, MutationTypes } from "../store";
+import { GetterTypes, MutationTypes } from "@/store";
 
 export default Vue.extend({
 	name: "BookmarkPopup",

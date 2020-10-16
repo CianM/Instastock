@@ -15,7 +15,7 @@ import Vue, { PropType } from "vue";
 
 import ImageCard from "./ImageCard.vue";
 
-import { InstastockImage } from "../interfaces";
+import { InstastockImage } from "@/interfaces";
 
 export default Vue.extend({
 	name: "ImageViewer",

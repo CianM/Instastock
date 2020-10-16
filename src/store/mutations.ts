@@ -2,7 +2,7 @@ import { MutationTree } from "vuex";
 
 import { AppState } from "./state";
 
-import { InstastockImage } from "../interfaces";
+import { InstastockImage } from "@/interfaces";
 
 export enum MutationTypes {
 	SET_IMAGES = "Set image data in store",

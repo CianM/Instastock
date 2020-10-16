@@ -1,4 +1,4 @@
-import { InstastockImage } from "../interfaces";
+import { InstastockImage } from "@/interfaces";
 
 export interface AppState {
 	images: {

@@ -1,13 +1,16 @@
-import { LoremPicsumService } from "../api/lorem-picsum";
+import { Source } from "@/api";
 
 export interface InstastockImage {
-	author: string;
-	download_url: string;
-	height: number;
-	id: string;
+	id: string; // Unique ID across all images
+	source: Source; // Image source site
 	url: string;
-	width: number;
-	source: LoremPicsumService["ID"];
+	size: {
+		height: number;
+		width: number;
+	};
+	original: {
+		[key: string]: unknown;
+	};
 }
 
 export interface StockImageService {
@@ -15,6 +18,8 @@ export interface StockImageService {
 	readonly NAME: string; // Service display name
 
 	readonly API_BASE_URL: string;
+
+	readonly IMAGE_DETAILS_CONFIG: InfoItem[];
 
 	fetchImages(): Promise<InstastockImage[]>;
 
@@ -24,4 +29,11 @@ export interface StockImageService {
 export interface ThumbnailResponse {
 	id: string; // Image ID
 	thumbnail: string; // Thumbnail data URL
+}
+
+// Image detail view info item
+export interface InfoItem {
+	label: string; // Data label
+	value: (image: InstastockImage) => string | number; // Data value function
+	type?: string;
 }
